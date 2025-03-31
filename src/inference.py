@@ -98,13 +98,11 @@ if __name__ == "__main__":
             inputs = tokenizer(batch_data, return_tensors="pt", padding=True)
             input_ids = inputs.input_ids.to(device)
             attention_mask = inputs.attention_mask.to(device)
-
-            with torch.no_grad():
-                generation_output = model.generate(
-                    input_ids=input_ids,
-                    attention_mask=attention_mask,
-                    **generation_config,
-                )
+            generation_output = model.generate(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                **generation_config,
+            )
 
             for j in range(generation_output.shape[0]):
                 response = tokenizer.decode(
@@ -116,3 +114,7 @@ if __name__ == "__main__":
                 write_f.write(
                     json.dumps(data_one, indent=None, ensure_ascii=False) + "\n"
                 )
+
+            # Flush memory after each batch
+            del inputs, input_ids, attention_mask, generation_output
+            torch.cuda.empty_cache()
