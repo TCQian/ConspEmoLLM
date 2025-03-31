@@ -8,6 +8,7 @@ import json
 import os
 import random
 import numpy as np
+import unicodedata
 
 
 def seed_everything(seed=23):
@@ -18,6 +19,10 @@ def seed_everything(seed=23):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
+
+
+def clean_unicode(text):
+    return unicodedata.normalize("NFKC", text)
 
 
 parser = argparse.ArgumentParser()
@@ -50,7 +55,11 @@ generation_config = dict(
 infer_data = pd.read_json(args.infer_file, lines=True)
 instruction_list = infer_data.apply(
     lambda row: pd.Series(
-        {"instruction": f"Human: \n" + row["instruction"] + "\n\nAssistant:\n"}
+        {
+            "instruction": clean_unicode(
+                f"Human: \n" + row["instruction"] + "\n\nAssistant:\n"
+            )
+        }
     ),
     axis=1,
 )["instruction"].to_list()
@@ -98,11 +107,13 @@ if __name__ == "__main__":
             inputs = tokenizer(batch_data, return_tensors="pt", padding=True)
             input_ids = inputs.input_ids.to(device)
             attention_mask = inputs.attention_mask.to(device)
-            generation_output = model.generate(
-                input_ids=input_ids,
-                attention_mask=attention_mask,
-                **generation_config,
-            )
+
+            with torch.no_grad():
+                generation_output = model.generate(
+                    input_ids=input_ids,
+                    attention_mask=attention_mask,
+                    **generation_config,
+                )
 
             for j in range(generation_output.shape[0]):
                 response = tokenizer.decode(
