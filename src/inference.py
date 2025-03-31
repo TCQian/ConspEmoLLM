@@ -149,6 +149,16 @@ if __name__ == "__main__":
                     spaces_between_special_tokens=False,
                 )
                 data_one = {"output": response}
+                if "output" in infer_data.iloc[i + j]:
+                    ground_truth = infer_data.iloc[i + j]["output"]
+                    pred = response.split("Assistant:", 1)
+                    is_pred_correct = False
+                    if len(pred) > 1:
+                        is_pred_correct = ground_truth in pred[1].strip()
+
+                    data_one["ground_truth"] = ground_truth
+                    data_one["is_prediction_correct"] = is_pred_correct
+
                 write_f.write(
                     json.dumps(data_one, indent=None, ensure_ascii=False) + "\n"
                 )
