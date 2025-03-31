@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=EmoLLM_class   # Job name
-#SBATCH --time=0:30:00                 # Time limit hrs:min:sec
+#SBATCH --time=0:15:00                 # Time limit hrs:min:sec
 #SBATCH --gres=gpu:a100-80:1
 #SBATCH --mail-type=ALL                  # Get email for all status updates
 #SBATCH --mail-user=e0407638@u.nus.edu   # Email for notifications
