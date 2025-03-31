@@ -256,6 +256,6 @@ for i, row in f2.iterrows():
     output = ""
     processed_lst.append({"instruction": prompt, "input": input, "output": output})
 
-with open("loco_test_emollm_intensity.json", "w") as file:
+with open("loco_test_emollm_emotion.json", "w") as file:
     for item in processed_lst:
         file.write(json.dumps(item) + "\n")
