@@ -148,8 +148,11 @@ if __name__ == "__main__":
                     skip_special_tokens=True,
                     spaces_between_special_tokens=False,
                 )
-                data_one = {"output": response}
-                if "output" in infer_data.iloc[i + j]:
+                data_one = {"output": response, "id": infer_data.iloc[i + j]["id"]}
+                if (
+                    "output" in infer_data.iloc[i + j]
+                    and infer_data.iloc[i + j]["output"]
+                ):
                     ground_truth = infer_data.iloc[i + j]["output"]
                     pred = response.split("Assistant:", 1)
                     is_pred_correct = False
