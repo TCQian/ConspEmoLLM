@@ -102,9 +102,29 @@ if __name__ == "__main__":
 
     batch_size = args.batch_size
     max_input_tokens = model.config.max_position_embeddings - max_new_tokens
+    truncate_target = max_input_tokens - 32  # Reserve space for 'Assistant:\n'
     with open(args.predict_file, "w", encoding="utf-8") as write_f:
         for i in range(0, len(instruction_list), batch_size):
-            batch_data = instruction_list[i : i + batch_size]
+            batch_data = []
+            for raw_prompt in instruction_list[i : i + batch_size]:
+                # Strip "Human: \n" and "\n\nAssistant:\n" first
+                content = raw_prompt.replace("Human: \n", "").replace(
+                    "\n\nAssistant:\n", ""
+                )
+                truncated_ids = tokenizer(
+                    content,
+                    truncation=True,
+                    max_length=truncate_target,
+                    add_special_tokens=False,
+                )["input_ids"]
+                truncated_text = tokenizer.decode(
+                    truncated_ids,
+                    skip_special_tokens=True,
+                    spaces_between_special_tokens=False,
+                )
+                full_prompt = f"Human: \n{truncated_text}\n\nAssistant:\n"
+                batch_data.append(full_prompt)
+
             inputs = tokenizer(
                 batch_data,
                 return_tensors="pt",
