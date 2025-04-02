@@ -30,7 +30,13 @@ for i, row in f1.iterrows():
     input = ""
     output = "1. conspiracy" if row["conspiracy"] == "Y" else "0. non-conspiracy"
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -46,7 +52,13 @@ for i, row in f2.iterrows():
     input = ""
     output = "1. conspiracy" if row["conspiracy"] == "Y" else "0. non-conspiracy"
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_conspemollm.json", "w") as file:
@@ -69,7 +81,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -85,7 +103,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_joy.json", "w") as file:
@@ -107,7 +131,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -123,7 +153,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_fear.json", "w") as file:
@@ -146,7 +182,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -162,7 +204,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_anger.json", "w") as file:
@@ -185,7 +233,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -201,7 +255,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_sadness.json", "w") as file:
@@ -223,7 +283,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -239,7 +305,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_sentiment.json", "w") as file:
@@ -262,7 +334,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -278,7 +356,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_class.json", "w") as file:
@@ -301,7 +385,13 @@ for i, row in f1.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 for i, row in f2.iterrows():
@@ -317,7 +407,13 @@ for i, row in f2.iterrows():
     input = ""
     output = ""
     processed_lst.append(
-        {"instruction": prompt, "input": input, "output": output, "id": doc_id, "truncated": truncated}
+        {
+            "instruction": prompt,
+            "input": input,
+            "output": output,
+            "id": doc_id,
+            "truncated": truncated,
+        }
     )
 
 with open("loco_test_emollm_emotion.json", "w") as file:
