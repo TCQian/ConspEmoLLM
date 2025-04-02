@@ -41,7 +41,7 @@ seed_everything(args.seed)
 if args.ckpt_path is None or args.ckpt_path == "":
     args.ckpt_path = args.model_name_or_path
 
-max_new_tokens = 1024
+max_new_tokens = 2048
 generation_config = dict(
     temperature=0.9,
     top_k=30,
