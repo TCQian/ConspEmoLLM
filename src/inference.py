@@ -101,7 +101,7 @@ if __name__ == "__main__":
     print("Load model successfully")
 
     batch_size = args.batch_size
-    max_input_tokens = model.config.max_position_embeddings - max_new_tokens
+    max_input_tokens = model.config.max_position_embeddings
     truncate_target = max_input_tokens - 32  # Reserve space for 'Assistant:\n'
     with open(args.predict_file, "w", encoding="utf-8") as write_f:
         for i in range(0, len(instruction_list), batch_size):
