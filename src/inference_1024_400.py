@@ -151,7 +151,7 @@ if __name__ == "__main__":
                 data_one = {
                     "output": response,
                     "id": infer_data.iloc[i + j]["id"],
-                    "truncated": infer_data.iloc[i + j]["truncated"] == True,
+                    "truncated": bool(infer_data.iloc[i + j]["truncated"]),
                 }
                 if (
                     "output" in infer_data.iloc[i + j]
