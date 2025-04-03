@@ -148,7 +148,11 @@ if __name__ == "__main__":
                     skip_special_tokens=True,
                     spaces_between_special_tokens=False,
                 )
-                data_one = {"output": response, "id": infer_data.iloc[i + j]["id"], "truncated": infer_data.iloc[i + j]["truncated"]}
+                data_one = {
+                    "output": response,
+                    "id": infer_data.iloc[i + j]["id"],
+                    "truncated": infer_data.iloc[i + j]["truncated"] == True,
+                }
                 if (
                     "output" in infer_data.iloc[i + j]
                     and infer_data.iloc[i + j]["output"]
