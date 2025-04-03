@@ -86,6 +86,10 @@ with open("loco_test_conspemollm.json", "w") as file:
     for item in processed_lst:
         file.write(json.dumps(item) + "\n")
 
+with open("loco_test_conspllm.json", "w") as file:
+    for item in processed_lst:
+        file.write(json.dumps(item) + "\n")
+
 
 # Process input required for Emotion intensity for EmoLLM - joy
 processed_lst = []

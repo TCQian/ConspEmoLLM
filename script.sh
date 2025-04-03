@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sbatch sbatch_conspllm.sh
 sbatch sbatch_conspemollm.sh
 sbatch sbatch_emollm_joy.sh
 sbatch sbatch_emollm_fear.sh
