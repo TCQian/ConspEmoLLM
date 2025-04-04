@@ -51,12 +51,7 @@ generation_config = dict(
 )
 
 
-# infer_data = pd.read_json(args.infer_file, lines=True)
-fake_n_words_sentence = ""
-for i in range(0, args.n_words):
-    fake_n_words_sentence += "hello" + " "
-fake_n_words_sentence = fake_n_words_sentence.strip()
-infer_data = pd.DataFrame({"instruction": fake_n_words_sentence, "input": "", "output": "1. conspiracy", "id": "C00118", "truncated": "false"})
+infer_data = pd.read_json(args.infer_file, lines=True)
 instruction_list = infer_data.apply(
     lambda row: pd.Series(
         {'instruction': clean_unicode(f"Human: \n" + row['instruction'] + "\n\nAssistant:\n")}

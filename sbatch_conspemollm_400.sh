@@ -22,6 +22,5 @@ python src/inference_1024_400.py \
     --infer_file $infer_file \
     --predict_file $predict_file \
     --batch_size 4 \
-    --n_words 1000 \
     --seed 123
     #--llama \
