@@ -21,6 +21,6 @@ python src/inference_1024_400.py \
     --model_name_or_path $model_name_or_path \
     --infer_file $infer_file \
     --predict_file $predict_file \
-    --batch_size 4 \
+    --batch_size 2 \
     --seed 123 \
     --llama \

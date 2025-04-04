@@ -13,14 +13,15 @@ conda activate conspemollm
 export ABS_PATH="."
 
 model_name_or_path=$ABS_PATH/model/ConspEmoLLM-7b
-infer_file=$ABS_PATH/data/loco_test_conspemollm.json
-predict_file=$ABS_PATH/predicts/loco_predict_conspemollm.json
+infer_file=$ABS_PATH/data/loco_test_conspemollm_full.json
+predict_file=$ABS_PATH/predicts/loco_predict_conspemollm_full.json
 
 
 python src/inference.py \
     --model_name_or_path $model_name_or_path \
     --infer_file $infer_file \
     --predict_file $predict_file \
-    --batch_size 4 \
-    --seed 123
+    --batch_size 2 \
+    --seed 123 \
+    --load_type fp32
     #--llama \

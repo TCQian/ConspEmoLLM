@@ -1,5 +1,4 @@
 import torch
-from tqdm import tqdm
 from transformers import LlamaTokenizer, AutoTokenizer, AutoModelForCausalLM, AutoConfig
 from peft import PeftModel
 import argparse
@@ -34,6 +33,7 @@ parser.add_argument("--infer_file", type=str, required=True)
 parser.add_argument("--predict_file", type=str, required=True)
 parser.add_argument("--batch_size", type=int, required=True)
 parser.add_argument("--seed", type=int, required=True)
+parser.add_argument("--load_type", type=str, default="fp16")
 args = parser.parse_args()
 
 seed_everything(args.seed)
@@ -41,7 +41,7 @@ seed_everything(args.seed)
 if args.ckpt_path is None or args.ckpt_path == "":
     args.ckpt_path = args.model_name_or_path
 
-max_new_tokens = 2048
+max_new_tokens = 1024
 generation_config = dict(
     temperature=0.9,
     top_k=30,
@@ -65,8 +65,11 @@ instruction_list = infer_data.apply(
 )["instruction"].to_list()
 
 if __name__ == "__main__":
-    load_type = torch.float16  # Sometimes may need torch.float32
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    load_type = torch.float16 if args.load_type == "fp16" else torch.float32
+    if torch.cuda.is_available():
+        device = torch.device(0)
+    else:
+        device = torch.device("cpu")
 
     if args.llama:
         tokenizer = LlamaTokenizer.from_pretrained(args.model_name_or_path)
@@ -94,82 +97,31 @@ if __name__ == "__main__":
             device_map="auto",
         )
 
-    if device.type == "cpu":
+    if device == torch.device("cpu"):
         model.float()
 
     model.eval()
     print("Load model successfully")
-
     batch_size = args.batch_size
-    max_input_tokens = model.config.max_position_embeddings
-    truncate_target = max_input_tokens - 32  # Reserve space for 'Assistant:\n'
     with open(args.predict_file, "w", encoding="utf-8") as write_f:
         for i in range(0, len(instruction_list), batch_size):
-            batch_data = []
-            for raw_prompt in instruction_list[i : i + batch_size]:
-                # Strip "Human: \n" and "\n\nAssistant:\n" first
-                content = raw_prompt.replace("Human: \n", "").replace(
-                    "\n\nAssistant:\n", ""
-                )
-                truncated_ids = tokenizer(
-                    content,
-                    truncation=True,
-                    max_length=truncate_target,
-                    add_special_tokens=False,
-                )["input_ids"]
-                truncated_text = tokenizer.decode(
-                    truncated_ids,
-                    skip_special_tokens=True,
-                    spaces_between_special_tokens=False,
-                )
-                full_prompt = f"Human: \n{truncated_text}\n\nAssistant:\n"
-                batch_data.append(full_prompt)
-
-            inputs = tokenizer(
-                batch_data,
-                return_tensors="pt",
-                padding=True,
-                truncation=True,
-                max_length=max_input_tokens,
-            )
+            batch_data = instruction_list[
+                i : min(i + batch_size, len(instruction_list))
+            ]
+            inputs = tokenizer(batch_data, return_tensors="pt", padding=True)
             input_ids = inputs.input_ids.to(device)
             attention_mask = inputs.attention_mask.to(device)
-
-            with torch.no_grad():
-                generation_output = model.generate(
-                    input_ids=input_ids,
-                    attention_mask=attention_mask,
-                    **generation_config,
-                )
-
+            generation_output = model.generate(
+                input_ids=input_ids, attention_mask=attention_mask, **generation_config
+            )
             for j in range(generation_output.shape[0]):
                 response = tokenizer.decode(
                     generation_output[j],
                     skip_special_tokens=True,
                     spaces_between_special_tokens=False,
                 )
-                data_one = {
-                    "output": response,
-                    "id": infer_data.iloc[i + j]["id"],
-                    "truncated": bool(infer_data.iloc[i + j]["truncated"]),
-                }
-                if (
-                    "output" in infer_data.iloc[i + j]
-                    and infer_data.iloc[i + j]["output"]
-                ):
-                    ground_truth = infer_data.iloc[i + j]["output"]
-                    pred = response.split("Assistant:", 1)
-                    is_pred_correct = False
-                    if len(pred) > 1:
-                        is_pred_correct = ground_truth in pred[1].strip()
-
-                    data_one["ground_truth"] = ground_truth
-                    data_one["is_prediction_correct"] = is_pred_correct
-
+                data_one = {}
+                data_one["output"] = response
                 write_f.write(
                     json.dumps(data_one, indent=None, ensure_ascii=False) + "\n"
                 )
-
-            # Flush memory after each batch
-            del inputs, input_ids, attention_mask, generation_output
-            torch.cuda.empty_cache()
