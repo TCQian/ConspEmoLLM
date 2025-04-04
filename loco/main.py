@@ -1,12 +1,12 @@
 import pandas as pd
 import json
-from transformers import AutoTokenizer
+# from transformers import AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained("../model/ConspEmoLLM-7b")
-tokenizer.pad_token_id = 0
-tokenizer.bos_token_id = 1
-tokenizer.eos_token_id = 2
-tokenizer.padding_side = "left"
+# tokenizer = AutoTokenizer.from_pretrained("../model/ConspEmoLLM-7b")
+# tokenizer.pad_token_id = 0
+# tokenizer.bos_token_id = 1
+# tokenizer.eos_token_id = 2
+# tokenizer.padding_side = "left"
 
 
 MAX_LENGTH = 1800
@@ -85,14 +85,14 @@ for i, row in f2.iterrows():
         }
     )
 
-with open("loco_test_conspemollm.json", "w") as file:
+with open("../data/loco_test_conspemollm_full.json", "w") as file:
     for item in processed_lst:
         file.write(json.dumps(item) + "\n")
 
-with open("loco_test_conspllm.json", "w") as file:
+with open("../data/loco_test_conspllm_full.json", "w") as file:
     for item in processed_lst:
         file.write(json.dumps(item) + "\n")
-
+exit()
 
 # Process input required for Emotion intensity for EmoLLM - joy
 processed_lst = []
