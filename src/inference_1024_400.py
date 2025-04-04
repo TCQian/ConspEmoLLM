@@ -31,6 +31,7 @@ parser.add_argument('--llama', action="store_true")
 parser.add_argument('--infer_file', type=str, required=True)
 parser.add_argument('--predict_file', type=str, required=True)
 parser.add_argument('--batch_size', type=int, required=True)
+parser.add_argument('--n_words', type=int, required=True)
 parser.add_argument('--seed', type=int, required=True)
 args = parser.parse_args()
 
@@ -51,7 +52,12 @@ generation_config = dict(
 )
 
 
-infer_data = pd.read_json(args.infer_file, lines=True)
+# infer_data = pd.read_json(args.infer_file, lines=True)
+fake_n_words_sentence = ""
+for i in range(0, args.n_words):
+    fake_n_words_sentence += "a" + " "
+fake_n_words_sentence = fake_n_words_sentence.strip()
+infer_data = pd.DataFrame({"instruction": [fake_n_words_sentence]})
 instruction_list = infer_data.apply(
     lambda row: pd.Series(
         {'instruction': clean_unicode(f"Human: \n" + row['instruction'] + "\n\nAssistant:\n")}
@@ -94,6 +100,7 @@ if __name__ == '__main__':
             #    continue 
             batch_data = instruction_list[i: min(i + batch_size, len(instruction_list))]
             inputs = tokenizer(batch_data, return_tensors="pt",padding=True)
+            print("inputs tokens", len(inputs.input_ids))
             #print("inputs", inputs)
             #print("length", len(inputs),len(inputs[0]))
             input_ids = inputs.input_ids.to(device)
