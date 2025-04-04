@@ -57,7 +57,7 @@ fake_n_words_sentence = ""
 for i in range(0, args.n_words):
     fake_n_words_sentence += "hello" + " "
 fake_n_words_sentence = fake_n_words_sentence.strip()
-infer_data = pd.DataFrame({"instruction": fake_n_words_sentence})
+infer_data = pd.DataFrame({"instruction": fake_n_words_sentence, "input": "", "output": "1. conspiracy", "id": "C00118", "truncated": "false"})
 instruction_list = infer_data.apply(
     lambda row: pd.Series(
         {'instruction': clean_unicode(f"Human: \n" + row['instruction'] + "\n\nAssistant:\n")}
@@ -100,7 +100,7 @@ if __name__ == '__main__':
             #    continue 
             batch_data = instruction_list[i: min(i + batch_size, len(instruction_list))]
             inputs = tokenizer(batch_data, return_tensors="pt",padding=True)
-            print("inputs tokens", len(inputs.input_ids))
+            print("inputs tokens", len(inputs[0]))
             #print("inputs", inputs)
             #print("length", len(inputs),len(inputs[0]))
             input_ids = inputs.input_ids.to(device)
