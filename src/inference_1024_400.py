@@ -8,6 +8,7 @@ import json
 import os
 import random
 import numpy as np
+import unicodedata
 
 def seed_everything(seed=23):
     print("seed",seed)
@@ -18,6 +19,9 @@ def seed_everything(seed=23):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
 
+
+def clean_unicode(text):
+    return unicodedata.normalize("NFKC", text)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_name_or_path', type=str, required=True)
@@ -50,7 +54,7 @@ generation_config = dict(
 infer_data = pd.read_json(args.infer_file, lines=True)
 instruction_list = infer_data.apply(
     lambda row: pd.Series(
-        {'instruction': f"Human: \n" + row['instruction'] + "\n\nAssistant:\n"}
+        {'instruction': clean_unicode(f"Human: \n" + row['instruction'] + "\n\nAssistant:\n")}
     ), axis=1
 )['instruction'].to_list()
 
