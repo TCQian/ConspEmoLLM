@@ -9,23 +9,26 @@ tokenizer.eos_token_id = 2
 tokenizer.padding_side = "left"
 
 
+MAX_LENGTH = 1800
+
 def truncate_and_check(text):
     # Encode original (no truncation)
-    original_ids = tokenizer.encode(text, add_special_tokens=False)
-    encoded = tokenizer(
-        text, truncation=True, max_length=1800, add_special_tokens=False
-    )
+    # original_ids = tokenizer.encode(text, add_special_tokens=False)
+    # encoded = tokenizer(
+    #     text, truncation=True, max_length=MAX_LENGTH, add_special_tokens=False
+    # )
 
-    # Decode back
-    truncated_text = tokenizer.decode(
-        encoded["input_ids"],
-        skip_special_tokens=True,
-        spaces_between_special_tokens=False,
-    )
+    # # Decode back
+    # truncated_text = tokenizer.decode(
+    #     encoded["input_ids"],
+    #     skip_special_tokens=True,
+    #     spaces_between_special_tokens=False,
+    # )
 
-    # Check if it was truncated
-    was_truncated = len(encoded["input_ids"]) < len(original_ids)
-    return truncated_text, was_truncated
+    # # Check if it was truncated
+    # was_truncated = len(encoded["input_ids"]) < len(original_ids)
+    # return truncated_text, was_truncated
+    return text, False
 
 
 loco_dataset = None
