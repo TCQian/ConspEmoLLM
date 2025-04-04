@@ -31,7 +31,6 @@ parser.add_argument('--llama', action="store_true")
 parser.add_argument('--infer_file', type=str, required=True)
 parser.add_argument('--predict_file', type=str, required=True)
 parser.add_argument('--batch_size', type=int, required=True)
-parser.add_argument('--n_words', type=int, required=True)
 parser.add_argument('--seed', type=int, required=True)
 args = parser.parse_args()
 
@@ -100,7 +99,6 @@ if __name__ == '__main__':
             #    continue 
             batch_data = instruction_list[i: min(i + batch_size, len(instruction_list))]
             inputs = tokenizer(batch_data, return_tensors="pt",padding=True)
-            print("inputs tokens", len(inputs[0]))
             #print("inputs", inputs)
             #print("length", len(inputs),len(inputs[0]))
             input_ids = inputs.input_ids.to(device)
